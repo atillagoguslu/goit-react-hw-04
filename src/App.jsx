@@ -1,12 +1,11 @@
 import "./App.css";
-import Header from "./components/Header/Header.jsx";
+import Header from "./components/header/Header.jsx";
 import { Toaster } from "react-hot-toast";
 import { useState, useEffect } from "react";
 import getImages from "./components/fetchers/getimages.js";
 import searchImages from "./components/fetchers/searchimages.js";
 import AnImageCard from "./components/gallery/AnImageCard.jsx";
 import { ColorRing } from "react-loader-spinner";
-import ReactDOM from "react-dom";
 import Modal from "react-modal";
 
 // Set the app element for accessibility
