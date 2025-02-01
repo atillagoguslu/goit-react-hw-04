@@ -9,9 +9,6 @@ const AnImageCard = ({ image, onImageClick }) => {
     image.description = "Description too short";
   }
 
-  console.log(image);
-  console.log(image.description);
-
   return (
     <div className={css["image-container"]} onClick={() => onImageClick(image)}>
       <img

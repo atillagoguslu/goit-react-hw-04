@@ -36,7 +36,7 @@ const Header = ({ fetchSearchedImages }) => {
         {/* Per-Page settings */}
         <select
           className={css.perPage}
-          onChange={(e) => setPerPage(e.target.value)}
+          onChange={(e) => setPerPage(Number(e.target.value))}
           name="per-page"
           id="per-page"
         >

@@ -13,7 +13,7 @@ const searchImages = async (query = "nature", page = 1, perPage = 30) => {
     },
   });
 
-  console.log("Searched Images:", response.data.results);
+  // console.log("Searched Images:", response.data.results);
   return response.data.results;
 };
 

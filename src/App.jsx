@@ -22,7 +22,7 @@ function App() {
   const [hasMore, setHasMore] = useState(true);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  const perPage = 10;
+  const [perPage, setPerPage] = useState(10);
 
   const customModalStyles = {
     content: {
@@ -82,14 +82,16 @@ function App() {
     fetchRandomImages();
   }, []);
 
-  const fetchSearchedImages = async (searchTerm, page = 1, perPage) => {
+  const fetchSearchedImages = async (searchTerm, page = 1, itemsPerPage) => {
     try {
       setIsLoading(true);
       setSearchTerm(searchTerm);
       setCurrentPage(1);
-      const resimler = await searchImages(searchTerm, page, perPage);
+      setPerPage(itemsPerPage);
+      const resimler = await searchImages(searchTerm, page, itemsPerPage);
+      console.log("resimler", resimler);
       setImages(resimler);
-      setHasMore(resimler.length === perPage);
+      setHasMore(resimler.length >= itemsPerPage);
     } catch (error) {
       setIsError(true);
       console.error("Error fetching searched images:", error);
@@ -104,6 +106,9 @@ function App() {
     try {
       setIsLoadingMore(true);
       const nextPage = currentPage + 1;
+      if (searchTerm === "") {
+        return;
+      }
       const moreImages = await searchImages(searchTerm, nextPage, perPage);
 
       if (moreImages.length === 0) {
