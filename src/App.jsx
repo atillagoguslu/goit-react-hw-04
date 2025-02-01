@@ -19,7 +19,7 @@ function App() {
   // Component Section
   const Gallery = ({ toGallery }) => {
     return (
-      <ul style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+      <ul className="galleryUL">
         {toGallery.map((image) => (
           <li key={image.id}>
             <AnImageCard image={image} />
@@ -92,7 +92,7 @@ function App() {
       <Header fetchSearchedImages={fetchSearchedImages} />
 
       {isError ? (
-        <h1>Error fetching images</h1>
+        <p className="error-message">Error fetching images</p>
       ) : isLoading ? (
         <p>Loading...</p>
       ) : images.length === 0 ? (

@@ -1,7 +1,7 @@
 :root {
-  --font-size-base: 20px;
+  --font-size-base: 18px;
   --font-size-lg: 1.5rem;
-  --font-size-xl: 2.5rem;
+  --font-size-xl: 2.25rem;
   --font-weight-normal: 400;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
@@ -12,11 +12,11 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1.75rem;
   width: 100%;
-  padding: 2rem 1rem;
-  background: linear-gradient(135deg, #4e68ff 0%, #3f51d5 100%);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem 1rem;
+  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
 .header h1 {
@@ -24,21 +24,21 @@
   font-weight: var(--font-weight-bold);
   text-align: center;
   color: #ffffff;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   margin: 0;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.75px;
 }
 
 .searchInput {
-  padding: 12px 20px;
+  padding: 14px 24px;
   font-size: var(--font-size-base);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
   margin-right: 12px;
-  width: 300px;
-  background: rgba(255, 255, 255, 0.9);
+  width: 350px;
+  background: rgba(255, 255, 255, 0.95);
   transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
@@ -53,30 +53,35 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
+.searchInput:focus::placeholder {
+  color: #bbbbbb;
+}
+
 form {
   margin: 0.5rem 0;
+
   display: flex;
   gap: 12px;
   align-items: center;
 }
 
 button {
-  padding: 12px 24px;
+  padding: 14px 28px;
   font-size: var(--font-size-base);
-  background: #2196f3;
+  background: #2ecc71;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
   font-weight: var(--font-weight-semibold);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 button:hover {
-  background: #1976d2;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  background: #27ae60;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 button:active {
@@ -86,13 +91,13 @@ button:active {
 
 /* Add these new styles for select elements */
 select {
-  padding: 12px 20px;
+  padding: 14px 24px;
   font-size: var(--font-size-base);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.95);
   transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   cursor: pointer;
 }
 
