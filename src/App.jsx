@@ -1,35 +1,127 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+import Header from "./components/Header/Header.jsx";
+import { Toaster } from "react-hot-toast";
+import { useState, useEffect } from "react";
+import getImages from "./components/fetchers/getimages.js";
+import searchImages from "./components/fetchers/searchimages.js";
+import AnImageCard from "./components/gallery/AnImageCard.jsx";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [images, setImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [hasMore, setHasMore] = useState(true);
+  const perPage = 10;
+
+  // Component Section
+  const Gallery = ({ toGallery }) => {
+    return (
+      <ul style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+        {toGallery.map((image) => (
+          <li key={image.id}>
+            <AnImageCard image={image} />
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
+  useEffect(() => {
+    const fetchRandomImages = async () => {
+      try {
+        setIsLoading(true);
+        const resimler = await getImages();
+        setImages(resimler);
+        setHasMore(resimler.length === perPage);
+      } catch (error) {
+        setIsError(true);
+        console.error("Error fetching random images:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchRandomImages();
+  }, []);
+
+  const fetchSearchedImages = async (searchTerm, page = 1, perPage) => {
+    try {
+      setIsLoading(true);
+      setSearchTerm(searchTerm);
+      setCurrentPage(1);
+      const resimler = await searchImages(searchTerm, page, perPage);
+      setImages(resimler);
+      setHasMore(resimler.length === perPage);
+    } catch (error) {
+      setIsError(true);
+      console.error("Error fetching searched images:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchMoreImages = async () => {
+    if (!hasMore || isLoading) return;
+
+    try {
+      setIsLoadingMore(true);
+      const nextPage = currentPage + 1;
+      const moreImages = await searchImages(searchTerm, nextPage, perPage);
+
+      if (moreImages.length === 0) {
+        setHasMore(false);
+        return;
+      }
+
+      setImages((prevImages) => [...prevImages, ...moreImages]);
+      setCurrentPage(nextPage);
+      setHasMore(moreImages.length === perPage);
+    } catch (error) {
+      setIsError(true);
+      console.error("Error fetching more images:", error);
+    } finally {
+      setIsLoadingMore(false);
+    }
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Toaster />
+      <Header fetchSearchedImages={fetchSearchedImages} />
+
+      {isError ? (
+        <h1>Error fetching images</h1>
+      ) : isLoading ? (
+        <p>Loading...</p>
+      ) : images.length === 0 ? (
+        <p className="no-images-found">No images found</p>
+      ) : (
+        <div>
+          <Gallery toGallery={images} />
+          {hasMore && (
+            <button
+              onClick={fetchMoreImages}
+              disabled={isLoadingMore}
+              style={{
+                display: "block",
+                margin: "20px auto",
+                padding: "10px 20px",
+                backgroundColor: "#3498db",
+                color: "white",
+                border: "none",
+                borderRadius: "5px",
+                cursor: isLoadingMore ? "not-allowed" : "pointer",
+              }}
+            >
+              {isLoadingMore ? "Loading..." : "Load More"}
+            </button>
+          )}
+        </div>
+      )}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
