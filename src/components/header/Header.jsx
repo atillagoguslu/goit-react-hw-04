@@ -23,7 +23,7 @@ const Header = ({ fetchSearchedImages }) => {
 
   return (
     <header className={css.header}>
-      <h1>Simple Image Searcher 9000x</h1>
+      <h1>Simple Image Searcher 9000</h1>
       <form onSubmit={handleSubmit} className={css.form}>
         <input
           type="text"

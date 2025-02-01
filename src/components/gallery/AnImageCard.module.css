@@ -4,7 +4,7 @@
   align-items: center;
   width: 210px;
   min-height: 270px;
-  max-height: 270px;
+  /* max-height: 270px; */
   padding: 16px;
 
   background-color: #ffffff;

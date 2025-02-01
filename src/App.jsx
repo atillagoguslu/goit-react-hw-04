@@ -5,6 +5,12 @@ import { useState, useEffect } from "react";
 import getImages from "./components/fetchers/getimages.js";
 import searchImages from "./components/fetchers/searchimages.js";
 import AnImageCard from "./components/gallery/AnImageCard.jsx";
+import { ColorRing } from "react-loader-spinner";
+import ReactDOM from "react-dom";
+import Modal from "react-modal";
+
+// Set the app element for accessibility
+Modal.setAppElement("#root");
 
 function App() {
   const [images, setImages] = useState([]);
@@ -14,7 +20,37 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [hasMore, setHasMore] = useState(true);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
   const perPage = 10;
+
+  const customModalStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      padding: "20px",
+      maxWidth: "90vw",
+      maxHeight: "90vh",
+      overflow: "auto",
+    },
+    overlay: {
+      backgroundColor: "rgba(0, 0, 0, 0.75)",
+    },
+  };
+
+  const openModal = (image) => {
+    setSelectedImage(image);
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+    setSelectedImage(null);
+  };
 
   // Component Section
   const Gallery = ({ toGallery }) => {
@@ -22,7 +58,7 @@ function App() {
       <ul className="galleryUL">
         {toGallery.map((image) => (
           <li key={image.id}>
-            <AnImageCard image={image} />
+            <AnImageCard image={image} onImageClick={() => openModal(image)} />
           </li>
         ))}
       </ul>
@@ -94,7 +130,16 @@ function App() {
       {isError ? (
         <p className="error-message">Error fetching images</p>
       ) : isLoading ? (
-        <p>Loading...</p>
+        <div className="loading-container">
+          <ColorRing
+            color="#3498db"
+            height={80}
+            width={80}
+            visible={true}
+            ariaLabel="blocks-loading"
+            wrapperStyle={{}}
+          />
+        </div>
       ) : images.length === 0 ? (
         <p className="no-images-found">No images found</p>
       ) : (
@@ -120,6 +165,61 @@ function App() {
           )}
         </div>
       )}
+
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={customModalStyles}
+        contentLabel="Image Modal"
+      >
+        {selectedImage && (
+          <div style={{ textAlign: "center", position: "relative" }}>
+            <img
+              src={selectedImage.urls.regular}
+              alt={selectedImage.alt_description}
+              style={{ maxWidth: "100%", maxHeight: "80vh", display: "block" }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                right: 0,
+                background: "rgba(0, 0, 0, 0.7)",
+                color: "white",
+                padding: "15px",
+                textAlign: "left",
+              }}
+            >
+              <h3 style={{ margin: "0 0 8px 0", fontSize: "18px" }}>
+                {selectedImage.user.name}
+              </h3>
+              <p style={{ margin: 0, fontSize: "14px" }}>
+                {selectedImage.description ||
+                  selectedImage.alt_description ||
+                  "No description available"}
+              </p>
+            </div>
+            <button
+              onClick={closeModal}
+              style={{
+                position: "absolute",
+                top: "10px",
+                right: "10px",
+                background: "rgba(0, 0, 0, 0.7)",
+                border: "none",
+                color: "white",
+                padding: "8px 15px",
+                borderRadius: "5px",
+                cursor: "pointer",
+                fontSize: "16px",
+              }}
+            >
+              ✕
+            </button>
+          </div>
+        )}
+      </Modal>
     </>
   );
 }
